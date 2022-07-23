@@ -1,0 +1,23 @@
+{
+    "name": "sahand/framework",
+    "description": "The Sahand Framework.",
+    "type": "project",
+    "require": {
+        "php": ">=8.0.0",
+        "morilog/jalali": "3.*",
+        "filp/whoops": "^2.14",
+        "ext-sodium": "*",
+      "ext-fileinfo": "*",
+      "ext-mysqli": "*"
+    }
+    ,
+    "require-dev": {
+        "roave/security-advisories": "dev-latest"
+    },
+    "autoload": {
+        "psr-4": {
+            "Core\\": "core/",
+            "App\\": "app/"
+        }
+    }
+}
