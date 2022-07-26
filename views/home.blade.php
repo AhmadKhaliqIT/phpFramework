@@ -142,13 +142,13 @@
                 "width": "10%",
                 searchable: false
             }, {
-                data: 'id',
-                name: 'id',
+                data: 'is_locked',
+                name: 'is_locked',
                 "width": "5%",
                 searchable: false
             }, {
-                data: 'is_locked',
-                name: 'is_locked',
+                data: 'test',
+                name: 'test',
                 orderable: false,
                 searchable: false,
                 "width": "20%"

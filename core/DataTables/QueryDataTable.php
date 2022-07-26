@@ -47,21 +47,41 @@ class QueryDataTable extends DataTableAbstract
 
     protected function defaultOrdering()
     {
+        foreach ($this->request->order as $orderCOl)
+        {
+            $this->builder->orderBy(
+                $this->request->columns[$orderCOl['column']]['data'],
+                $orderCOl['dir']
+            );
 
+        }
     }
-
 
     protected function globalSearch($keyword)
     {
-        echo $keyword;
+        //echo $keyword;
+        foreach ($this->request->columns as $col)
+        {
+            if($col['searchable']=='true')
+            {
+                $this->builder->orWhere($col['data'],'LIKE','%'.$keyword.'%');
+            }
+
+        }
     }
+
 
     public function make($mDataSupport = true): string
     {
 
+        if (is_array($this->request->order))
+        {
+            $this->defaultOrdering();
+        }
+
         if (isset($this->request->search['value']) and strlen($this->request->search['value'])>1 )
         {
-            $this->globalSearch();
+            $this->globalSearch($this->request->search['value']);
         }
 
         $this->paging();
@@ -77,7 +97,47 @@ class QueryDataTable extends DataTableAbstract
 
     public function builder_data(): bool|string
     {
-        return json_encode($this->builder->get());
+        $DB_DATA = $this->builder->get();
+
+        foreach ($DB_DATA as $id => $row)
+        {
+
+
+            foreach($this->columnDef['edit'] as $edit)
+            {
+                $ColName = $edit['name'];
+                if (is_callable($edit['content']))
+                    $DB_DATA[$id]->$ColName = $edit['content']($row);
+            }
+
+            foreach($this->columnDef['append'] as $append)
+            {
+                $ColName = $append['name'];
+                if (is_callable($append['content']))
+                    $DB_DATA[$id]->$ColName = $append['content']($row);
+            }
+
+
+            $cols = (array_keys((array)$row));
+
+            foreach($cols as $col)
+            {
+                if(!isset($this->columnDef['raw']) or !is_array($this->columnDef['raw']) or !in_array($col,$this->columnDef['raw']))
+                {
+                    $DB_DATA[$id]->$col = htmlspecialchars($DB_DATA[$id]->$col , ENT_QUOTES);
+                }
+            }
+
+
+
+        }
+
+
+        //die();
+
+
+
+        return json_encode($DB_DATA);
     }
 
     /**

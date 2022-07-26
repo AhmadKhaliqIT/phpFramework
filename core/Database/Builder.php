@@ -66,7 +66,7 @@ class Builder {
     {
         foreach ($array as $key=>$value)
         {
-            $value = '"'.$value.'"';
+            $value = '"'.$this->_connection->real_escape_string($value).'"';
             $this->_where[]= [$type,$key,'=',$value];
         }
     }
@@ -86,7 +86,7 @@ class Builder {
             $operator = '=';
         }
 
-        $value = '"'.$value.'"';
+        $value = '"'.$this->_connection->real_escape_string($value).'"';
 
         $this->_where[]= ['AND',$col,$operator,$value];
         return $this;
@@ -106,7 +106,7 @@ class Builder {
             $operator = '=';
         }
 
-        $value = '"'.$value.'"';
+        $value = '"'.$this->_connection->real_escape_string($value).'"';
 
         $this->_where[]= ['OR',$col,$operator,$value];
         return $this;
@@ -116,7 +116,7 @@ class Builder {
     {
         for ($i=0;$i<count($array);$i++)
         {
-            $array[$i] = '"'.$array[$i].'"';
+            $array[$i] = '"'.$this->_connection->real_escape_string($array[$i]).'"';
 
         }
 
@@ -128,7 +128,7 @@ class Builder {
     {
         for ($i=0;$i<count($array);$i++)
         {
-            $array[$i] = '"'.$array[$i].'"';
+            $array[$i] = '"'.$this->_connection->real_escape_string($array[$i]).'"';
         }
         $this->_where[]= ['AND',$col,'NOT IN','('.implode(',',$array).')'];
         return $this;
@@ -230,7 +230,7 @@ class Builder {
             {
                 $arr = [];
                 foreach ($this->_insert_update_values as $row => $value)
-                    $arr[] = $row.'="'.$value.'"';
+                    $arr[] = $row.'="'.$this->_connection->real_escape_string($value).'"';
                 $query .= implode(',',$arr);
             }
         }
@@ -245,7 +245,7 @@ class Builder {
                 foreach ($this->_insert_update_values as $row =>$value)
                 {
                     $Cols_arr[] = $row;
-                    $Values_Arr[] = '"'.$value.'"';
+                    $Values_Arr[] = '"'.$this->_connection->real_escape_string($value).'"';
                 }
 
                 $query .= ' ('.implode(',',$Cols_arr).')';

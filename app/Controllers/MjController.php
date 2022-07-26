@@ -39,14 +39,10 @@ class MjController extends Controller
         $users = DB::table('accounts')->select(['id','full_name','username','last_visit','employment_date','termination_date','is_locked']);
 
         return Datatables::of($users)
-//            ->editColumn('full_name', function ($DATA) {
-//
-//                return 'sss';
-//            })
-            ->addColumn('childroon', function ($DATA)
+            ->addColumn('test', function ($DATA)
             {
-                return '1';
-            })
+                return $DATA->id+1;
+            })/*
             ->editColumn('last_visit', function ($DATA)
             {
                 return '<center>' . $DATA->last_visit . '<center>';
@@ -55,7 +51,7 @@ class MjController extends Controller
             {
                 return ($DATA->is_locked == 1) ? '<span>enable</span>' : '<span>disable</span>';
             })
-            ->rawColumns([ 'is_locked', 'section_id', 'marriage', 'children', 'last_visit', 'full_name'])
+            ->rawColumns([ 'is_locked', 'section_id', 'marriage', 'children',  'full_name']) //'last_visit',*/
             ->make();
     }
 
