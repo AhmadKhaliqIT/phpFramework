@@ -15,7 +15,7 @@ namespace Core\DataTables\Utilities;
 class Request
 {
     /**
-     * @var \Illuminate\Http\Request
+     * @var \Core\Http\Request
      */
     protected $request;
 
@@ -49,7 +49,8 @@ class Request
      */
     public function __get($name)
     {
-        return $this->request->$name;
+
+        return $this->request->$name ?? [];
     }
 
     /**
