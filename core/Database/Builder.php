@@ -15,7 +15,7 @@ use Exception;
 class Builder {
     private string $_table;
     private string $_query;
-    private array $_select=[];
+    public  array $_select=[];
     private array $_where=[];
     private array $_insert_update_values=[];
     private string $_limit='';
@@ -152,10 +152,22 @@ class Builder {
         return $this;
     }
 
+    /* Alias to set the "limit" value of the query. */
+    public function take($value): static
+    {
+        return $this->limit($value);
+    }
+
     public function limit($limit): Builder //done
     {
         $this->_limit = ' '.$limit.' ';
         return $this;
+    }
+
+    /* Alias to set the "offset" value of the query. */
+    public function skip($value): static
+    {
+        return $this->offset($value);
     }
 
     public function offset($offset): Builder //done
@@ -270,6 +282,7 @@ class Builder {
     public function get(): \Core\Collection\Collection   //done
     {
         $this->prepare_query('SELECT');
+        //print_r($this->_query);echo"\n";
         $result = $this->rawQuery($this->_query);
         $output_result=[];
         if ($result->num_rows > 0)
@@ -362,7 +375,7 @@ class Builder {
      */
     public function updateOrInsert(array $attributes, array $values = []): bool
     {
-        if (! $this->where($attributes)->exists()) {
+        if (! $this->cloneWithout(['_where'])->where($attributes)->exists()) {
             return $this->insert(array_merge($attributes, $values));
         }
 
@@ -400,8 +413,7 @@ class Builder {
      */
     public function sum($column): int //done
     {
-        self::select(['SUM('.$column.') as output']);
-        $res = self::get();
+        $res = $this->cloneWithout(['_select'])->select(['SUM('.$column.') as output'])->get();
         if (isset($res[0]) and isset($res[0]->output))
             return $res[0]->output;
         return 0;
@@ -411,8 +423,7 @@ class Builder {
      * @throws Exception
      */
     public function min($column) {//done
-        self::select(['MIN('.$column.') as output']);
-        $res = self::get();
+        $res = $this->cloneWithout(['_select'])->select(['MIN('.$column.') as output'])->get();
         if (isset($res[0]) and isset($res[0]->output))
             return $res[0]->output;
         return null;
@@ -422,8 +433,7 @@ class Builder {
      * @throws Exception
      */
     public function max($column) {//done
-        self::select(['MAX('.$column.') as output']);
-        $res = self::get();
+        $res = $this->cloneWithout(['_select'])->select(['MAX('.$column.') as output'])->get();
         if (isset($res[0]) and isset($res[0]->output))
             return $res[0]->output;
         return null;
@@ -434,8 +444,7 @@ class Builder {
      */
     public function avg($column)//done
     {
-        self::select(['AVG('.$column.') as output']);
-        $res = self::get();
+        $res = $this->cloneWithout(['_select'])->select(['AVG('.$column.') as output'])->get();
         if (isset($res[0]) and isset($res[0]->output))
             return $res[0]->output;
         return null;
@@ -445,8 +454,7 @@ class Builder {
      * @throws Exception
      */
     public function count($columns = '*') {//done
-        self::select(['count('.$columns.') as output']);
-        $res = self::get();
+        $res = $this->cloneWithout(['_select','_offset','_limit'])->select(['count('.$columns.') as output'])->get();
         if (isset($res[0]) and isset($res[0]->output))
             return $res[0]->output;
         return null;
@@ -469,5 +477,28 @@ class Builder {
     {
         return !$this->exists();
     }
+
+    /**
+     * Clone the query without the given properties.
+     *
+     * @param  array  $properties
+     * @return static
+     */
+    public function cloneWithout(array $properties): static
+    {
+        return tap(clone $this, function ($clone) use ($properties) {
+            foreach ($properties as $property) {
+                if (is_array($clone->{$property}))
+                    $clone->{$property} = [];
+                elseif(is_string($clone->{$property}))
+                    $clone->{$property} = '';
+                elseif(is_int($clone->{$property}))
+                    $clone->{$property} = 0;
+                else
+                    $clone->{$property} = null;
+            }
+        });
+    }
+
 
 }
