@@ -42,7 +42,7 @@ class MjController extends Controller
             ->addColumn('test', function ($DATA)
             {
                 return $DATA->id+1;
-            })/*
+            })
             ->editColumn('last_visit', function ($DATA)
             {
                 return '<center>' . $DATA->last_visit . '<center>';
@@ -51,7 +51,7 @@ class MjController extends Controller
             {
                 return ($DATA->is_locked == 1) ? '<span>enable</span>' : '<span>disable</span>';
             })
-            ->rawColumns([ 'is_locked', 'section_id', 'marriage', 'children',  'full_name']) //'last_visit',*/
+            ->rawColumns([ 'is_locked', 'section_id', 'marriage', 'children',  'full_name']) //'last_visit',
             ->make();
     }
 
