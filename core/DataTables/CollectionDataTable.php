@@ -12,22 +12,22 @@ class CollectionDataTable extends DataTableAbstract{
     /**
      * Collection object.
      *
-     * @var \Illuminate\Support\Collection
+     * @var Collection
      */
-    public $collection;
+    public Collection $collection;
 
 
     /**
      * Collection object.
      *
-     * @var \Illuminate\Support\Collection
+     * @var Collection
      */
-    public $original;
+    public Collection $original;
 
     /**
      * CollectionEngine constructor.
      *
-     * @param \Illuminate\Support\Collection $collection
+     * @param Collection $collection
      */
     public function __construct(Collection $collection)
     {
@@ -53,8 +53,8 @@ class CollectionDataTable extends DataTableAbstract{
     /**
      * Factory method, create and return an instance for the DataTable engine.
      *
-     * @param array|\Illuminate\Support\Collection $source
-     * @return CollectionDataTable|DataTableAbstract
+     * @param array|Collection $source
+     * @return QueryDataTable|DataTableAbstract
      */
     public static function create($source)
     {
@@ -232,6 +232,20 @@ class CollectionDataTable extends DataTableAbstract{
         };
 
         return $sorter;
+    }
+
+
+    /**
+     * Perform pagination.
+     *
+     * @return void
+     */
+    public function paging()
+    {
+        $this->collection = $this->collection->slice(
+            $this->request->input('start'),
+            (int) $this->request->input('length') > 0 ? $this->request->input('length') : 10
+        );
     }
 
 

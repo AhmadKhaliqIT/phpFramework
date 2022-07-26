@@ -38,7 +38,7 @@ abstract class DataTableAbstract implements  Arrayable, Jsonable
      *
      * @var array
      */
-    protected $columns = [];
+    protected array $columns = [];
 
     /**
      * DT columns definitions container (add/edit/remove/filter/order/escape).
