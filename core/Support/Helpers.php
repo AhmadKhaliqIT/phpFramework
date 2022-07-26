@@ -273,6 +273,18 @@ function view($view = null, $data = [])
     return core()->View()->view($view,$data);
 }
 
+/**
+ * Call the given Closure with the given value then return the value.
+ *
+ * @param  mixed  $value
+ * @param callable|null $callback
+ * @return mixed
+ */
+function tap(mixed $value, ?callable $callback): mixed
+{
+    $callback($value);
+    return $value;
+}
 
 /**
  * Get an item from an array or object using "dot" notation.
