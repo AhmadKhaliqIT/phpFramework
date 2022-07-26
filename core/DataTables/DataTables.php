@@ -12,7 +12,7 @@ class DataTables{
     public static function make($source)
     {
         $engines  = [
-           // "query" => "Core\DataTables\QueryDataTable",
+            "query" => "Core\DataTables\QueryDataTable",
             "collection" => "Core\DataTables\CollectionDataTable",
         ];
 
