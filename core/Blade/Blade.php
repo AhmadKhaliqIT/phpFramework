@@ -121,8 +121,11 @@ class Blade
 
        $__env=new ManageBlade();
        extract($context);
+
        $compiled_path= $this->CompileBladeFile( $view);
+
        ob_start();
+
        include ($compiled_path);
         return ob_get_clean();
 
@@ -134,6 +137,7 @@ class Blade
      */
     public function CompileBladeFile(string $view): string
     {
+
         $file_path=$this->findViewInPath($view);
 
         $compiled_path=$this->cache_path.'/'.sha1($file_path).'.php';
@@ -175,6 +179,7 @@ class Blade
 
 
         Filesystem::put($compiled_path, $result);
+
         Filesystem::touch($compiled_path,Filesystem::lastModified($file_path));
 
 

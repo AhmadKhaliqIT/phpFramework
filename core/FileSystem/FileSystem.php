@@ -332,6 +332,19 @@ class FileSystem
         return filemtime($path);
     }
 
+
+    /**
+     * touch — Sets access and modification time of file
+     *
+     * @param string $path
+     * @param $time
+     */
+    protected function touch(string $path, $time)
+    {
+        touch($path,$time);
+    }
+
+
     /**
      * Determine if the given path is a directory.
      *
