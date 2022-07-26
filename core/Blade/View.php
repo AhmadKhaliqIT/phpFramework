@@ -2,6 +2,8 @@
 namespace Core\Blade;
 
 
+use Exception;
+
 class View extends Blade {
 
 
@@ -9,7 +11,7 @@ class View extends Blade {
     public string $view;
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     public function render(): bool|string
     {
