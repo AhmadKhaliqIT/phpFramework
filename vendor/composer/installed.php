@@ -6,7 +6,7 @@
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
         'reference' => NULL,
-        'name' => 'sahand/framework',
+        'name' => 'ahmadkhaliqit/phpframework',
         'dev' => true,
     ),
     'versions' => array(

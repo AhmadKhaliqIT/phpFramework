@@ -14,7 +14,6 @@ if (!defined('FRAMEWORK_START')) {
     die('You should not be here :)');
 }
 
-
 require __DIR__ . '/vendor/autoload.php';
 
 use Core\Core;
