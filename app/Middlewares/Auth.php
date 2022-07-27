@@ -15,8 +15,10 @@
 namespace App\Middlewares;
 
 use Closure;
+use Core\Browser\Session;
 use Core\Http\Request;
-use Core\Auth\Auth as AuthClass;
+use Core\Auth\Auth as AuthBass;
+use Core\Auth\Guard;
 
 class Auth
 {
@@ -44,7 +46,7 @@ class Auth
 
     public function guard($guardName): Auth
     {
-        AuthClass::$_current_middleware_guard = $guardName;
+        AuthBass::$_current_middleware_guard = $guardName;
         return $this;
     }
 
@@ -60,8 +62,13 @@ class Auth
     {
         if (in_array($this->Current_Method,$this->except_methods))
             return true;
-        else
-            die();
+
+
+        if(AuthBass::Guard(AuthBass::$_current_middleware_guard)->check())
+            return true;
+
+        //redirect('test_response_json');
+        die('please login');
     }
 
 

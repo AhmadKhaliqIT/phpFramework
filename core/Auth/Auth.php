@@ -11,20 +11,33 @@ namespace Core\Auth;
  * @link       https://github.com/AhmadKhaliqIT/phpFramework/
  */
 
+
+
+use Core\Router\RouterBase;
+use Exception;
+
 class Auth{
 
-    public static string $_current_middleware_guard;
+    private static array $Guards=[];
+    public  static string $_current_middleware_guard;
 
+    /**
+     * @throws Exception
+     */
     public static function user(): object
     {
-        echo self::$_current_middleware_guard.'--';
-        return (object)[];
+        if (!array_key_exists(self::$_current_middleware_guard,self::$Guards))
+            throw new Exception('Guard not Defined!');
+
+        return self::$Guards[self::$_current_middleware_guard]->user();
     }
 
     public static function guard($guard): object
     {
+        if (!array_key_exists($guard,self::$Guards))
+            self::$Guards[$guard] = new Guard($guard);
 
-        return (object)[];
+        return self::$Guards[$guard];
     }
 
 }
