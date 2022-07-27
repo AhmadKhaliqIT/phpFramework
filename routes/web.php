@@ -23,6 +23,8 @@ Route::get('/allah{id}/id',function($id){
     return 'AllahNejad ghomie '.$id;
 })->name('test534');
 
+Route::get('/do_login','MjController@do_login')->name('do_login');
+Route::get('/logout','MjController@logout')->name('logout');
 Route::get('/blade','MjController@test_blade')->name('blade');
 Route::get('/table','MjController@test_table')->name('table');
 Route::get('/res','MjController@test_response_image')->name('test_response_image');

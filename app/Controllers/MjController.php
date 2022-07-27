@@ -14,13 +14,26 @@ class MjController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('Auth')->guard('Admin')->except('test_blade','test_table')->makeSafe();
+        $this->middleware('Auth')->guard('Admin')->except('test_blade','do_login')->makeSafe();
+    }
+
+    public function do_login()
+    {
+        $x = Auth::guard('Admin')->attempt(['name'=>'ahmad']);
+        print_r($x);
+    }
+
+    public function logout()
+    {
+        $x = Auth::guard('Admin')->logout();
+        print_r($x);
     }
 
     public function test_blade()
     {
-        print_r(Auth::user('Hello'));
-        die();
+        $x = Auth::guard('Admin')->check();
+        var_dump($x);
+        die('hello');
         return view('home')->with('name','ahmad')->with('family','khaliq');
     }
 
