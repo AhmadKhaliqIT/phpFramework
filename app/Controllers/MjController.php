@@ -18,12 +18,7 @@ class MjController extends Controller
 
     public function test_blade()
     {
-
-        //$person=(object)['age'=>150];
-        //dd(view('home',compact('person')));
-        return view('home')->with('name','ahmad')->with('family','ahmasd');
-
-
+        return view('home')->with('name','ahmad')->with('family','khaliq');
     }
 
     public function test_table()
