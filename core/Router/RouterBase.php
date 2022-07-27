@@ -1,13 +1,18 @@
 <?php
-namespace Core\Router;
 /* بسم الله الرحمن الرحیم */
-/****************************************
- **** Class developers: *****************
- **** Ahmad Khaliq   ********************
- **** Email: Ahmad.Khaliq@yahoo.com *****
- **** 2021  *****************************
- ***************************************/
+/**
+ * phpFramework
+ *
+ * @author     Ahmad Khaliq
+ * @author     Mojtaba Zadegi
+ * @copyright  2022 Ahmad Khaliq
+ * @license    https://github.com/AhmadKhaliqIT/phpFramework/blob/main/LICENSE
+ * @link       https://github.com/AhmadKhaliqIT/phpFramework/
+ */
 
+
+
+namespace Core\Router;
 use Core\Core;
 use Core\Blade\View;
 use Core\Http\Response;

@@ -1,13 +1,17 @@
 <?php
 /* بسم الله الرحمن الرحیم */
-/****************************************
- **** Sahand Framework ******************
- **** Core developers: ******************
- **** Ahmad Khaliq - Mojtaba Zadegi *****
- **** Email: Ahmad.Khaliq@yahoo.com *****
- **** Email: mojtaba.zadehgi@gmail.com **
- **** 2021  *****************************
- ***************************************/
+/**
+ * phpFramework
+ *
+ * @author     Ahmad Khaliq
+ * @author     Mojtaba Zadegi
+ * @copyright  2022 Ahmad Khaliq
+ * @license    https://github.com/AhmadKhaliqIT/phpFramework/blob/main/LICENSE
+ * @link       https://github.com/AhmadKhaliqIT/phpFramework/
+ */
+
+
+
 
 return [
     'key' => 'Qg+zxgGnBdGIzyjOXKgv9XHnaz8cpwOlFrHulxPLYlg='

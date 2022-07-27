@@ -1,16 +1,20 @@
 <?php
-namespace Core\Database;
 /* بسم الله الرحمن الرحیم */
+/**
+ * phpFramework
+ *
+ * @author     Ahmad Khaliq
+ * @author     Mojtaba Zadegi
+ * @copyright  2022 Ahmad Khaliq
+ * @license    https://github.com/AhmadKhaliqIT/phpFramework/blob/main/LICENSE
+ * @link       https://github.com/AhmadKhaliqIT/phpFramework/
+ */
+
+
+
+namespace Core\Database;
 
 use Exception;
-
-/***************************************
- **** Class developers: ****************
- **** Ahmad Khaliq   *******************
- **** Email: Ahmad.Khaliq@yahoo.com ****
- **** 2021  ****************************
- **************************************/
-
 
 class Builder {
     private string $_table;

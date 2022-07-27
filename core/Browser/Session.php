@@ -1,13 +1,18 @@
 <?php
+/* بسم الله الرحمن الرحیم */
+/**
+ * phpFramework
+ *
+ * @author     Ahmad Khaliq
+ * @author     Mojtaba Zadegi
+ * @copyright  2022 Ahmad Khaliq
+ * @license    https://github.com/AhmadKhaliqIT/phpFramework/blob/main/LICENSE
+ * @link       https://github.com/AhmadKhaliqIT/phpFramework/
+ */
+
+
 
 namespace Core\Browser;
-/* بسم الله الرحمن الرحیم */
-/****************************************
- **** Class developers: *****************
- **** Ahmad Khaliq   ********************
- **** Email: Ahmad.Khaliq@yahoo.com *****
- **** 2021  *****************************
- ***************************************/
 
 use Core\FileSystem\FileSystem;
 use Exception;

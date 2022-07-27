@@ -1,12 +1,17 @@
 <?php
 /* بسم الله الرحمن الرحیم */
-/****************************************
- **** Core developers: ******************
- **** Ahmad Khaliq - Mojtaba Zadegi *****
- **** Email: Ahmad.Khaliq@yahoo.com *****
- **** Email: mojtaba.zadehgi@gmail.com **
- **** 2021  *****************************
- ***************************************/
+/**
+ * phpFramework
+ *
+ * @author     Ahmad Khaliq
+ * @author     Mojtaba Zadegi
+ * @copyright  2022 Ahmad Khaliq
+ * @license    https://github.com/AhmadKhaliqIT/phpFramework/blob/main/LICENSE
+ * @link       https://github.com/AhmadKhaliqIT/phpFramework/
+ */
+
+
+
 
 if (!defined('SAHAND_START')) {
     die('You should not be here :)');

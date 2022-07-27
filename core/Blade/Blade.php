@@ -1,4 +1,16 @@
 <?php
+/* بسم الله الرحمن الرحیم */
+/**
+ * phpFramework
+ *
+ * @author     Ahmad Khaliq
+ * @author     Mojtaba Zadegi
+ * @copyright  2022 Ahmad Khaliq
+ * @license    https://github.com/AhmadKhaliqIT/phpFramework/blob/main/LICENSE
+ * @link       https://github.com/AhmadKhaliqIT/phpFramework/
+ */
+
+
 
 namespace Core\Blade;
 use Core\FileSystem\FileSystem;
@@ -9,10 +21,7 @@ use InvalidArgumentException;
 if(!defined('BASE_PATH')) {
     exit('No direct script access allowed');
 }
-/**
- * Class Blade
- * @package Blade
- */
+
 
 class Blade
 {

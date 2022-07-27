@@ -1,14 +1,18 @@
 <?php
-namespace Core\FileSystem;
 /* بسم الله الرحمن الرحیم */
-/****************************************
- **** Class developers: *****************
- **** Ahmad Khaliq   ********************
- **** Email: Ahmad.Khaliq@yahoo.com *****
- **** 2021  *****************************
- ***************************************/
+/**
+ * phpFramework
+ *
+ * @author     Ahmad Khaliq
+ * @author     Mojtaba Zadegi
+ * @copyright  2022 Ahmad Khaliq
+ * @license    https://github.com/AhmadKhaliqIT/phpFramework/blob/main/LICENSE
+ * @link       https://github.com/AhmadKhaliqIT/phpFramework/
+ */
 
 
+
+namespace Core\FileSystem;
 
 use ErrorException;
 use Exception;

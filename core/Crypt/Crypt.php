@@ -1,14 +1,19 @@
 <?php
+/* بسم الله الرحمن الرحیم */
+/**
+ * phpFramework
+ *
+ * @author     Ahmad Khaliq
+ * @author     Mojtaba Zadegi
+ * @copyright  2022 Ahmad Khaliq
+ * @license    https://github.com/AhmadKhaliqIT/phpFramework/blob/main/LICENSE
+ * @link       https://github.com/AhmadKhaliqIT/phpFramework/
+ */
+
+
+
 declare(strict_types=1);
 namespace Core\Crypt;
-/* بسم الله الرحمن الرحیم */
-/****************************************
- **** Class developers: *****************
- **** Ahmad Khaliq   ********************
- **** Email: Ahmad.Khaliq@yahoo.com *****
- **** 2021  *****************************
- ***************************************/
-
 
 use Exception;
 use RangeException;

@@ -1,4 +1,17 @@
 <?php
+/* بسم الله الرحمن الرحیم */
+/**
+ * phpFramework
+ *
+ * @author     Ahmad Khaliq
+ * @author     Mojtaba Zadegi
+ * @copyright  2022 Ahmad Khaliq
+ * @license    https://github.com/AhmadKhaliqIT/phpFramework/blob/main/LICENSE
+ * @link       https://github.com/AhmadKhaliqIT/phpFramework/
+ */
+
+
+
 namespace Core\DataTables;
 use Core\Collection\Collection;
 use Core\DataTables\Processors\DataProcessor;
@@ -8,24 +21,10 @@ use Core\Support\Contract\Jsonable;
 use Core\Support\Str;
 
 
-/**
- * @method DataTableAbstract setTransformer($transformer)
- * @method DataTableAbstract setSerializer($transformer)
- * @property mixed transformer
- * @property mixed serializer
- * @see     https://github.com/yajra/laravel-datatables-fractal for transformer related methods.
- */
-
 
 abstract class DataTableAbstract implements  Arrayable, Jsonable
 {
 
-
-    /**
-     * DataTables Request object.
-     *
-     * @var \Yajra\DataTables\Utilities\Request
-     */
     public $request;
 
     /**
