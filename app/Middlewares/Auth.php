@@ -16,19 +16,53 @@ namespace App\Middlewares;
 
 use Closure;
 use Core\Http\Request;
+use Core\Auth\Auth as AuthClass;
 
 class Auth
 {
+    private string $Current_Method;
+    private array $except_methods=[];
     /**
      * Handle an incoming request.
      *
      * @param Request $request
-     * @return mixed
+     * @return Auth
      */
-    public function handle(Request $request): mixed
+    public function handle(Request $request): Auth
     {
-        echo 'Auth';
-
-        return $request;
+        /* Find which method is called by Router */
+        foreach (debug_backtrace() as $trace)
+        {
+            if($trace['function']=='callMethod')
+            {
+                $method = explode('@',$trace['args'][0]);
+                $this->Current_Method = strtolower($method[1]);
+            }
+        }
+        return $this;
     }
+
+    public function guard($guardName): Auth
+    {
+        AuthClass::$_current_middleware_guard = $guardName;
+        return $this;
+    }
+
+
+    public function except(...$methods): Auth
+    {
+        $this->except_methods = array_merge($this->except_methods,$methods);
+        $this->except_methods = array_map('strtolower', array_unique($this->except_methods));
+        return $this;
+    }
+
+    public function makeSafe()
+    {
+        if (in_array($this->Current_Method,$this->except_methods))
+            return true;
+        else
+            die();
+    }
+
+
 }
