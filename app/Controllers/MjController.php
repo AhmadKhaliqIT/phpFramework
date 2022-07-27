@@ -29,13 +29,6 @@ class MjController extends Controller
     public function test_table()
     {
 
-//        $users=
-//            [
-//                ["id"=>2,"full_name"=>"mojtaba","username"=>187,"last_visit"=>"1400/06/10 11:43:46","employment_date"=>"0920699278","termination_date"=>"09154074776","is_locked"=>1]
-//                ,["id"=>3,"full_name"=>"ahmad","username"=>184,"last_visit"=>"1399/11/02 10:51:14","employment_date"=>"0923036997","termination_date"=>"09396853635","is_locked"=>0]
-//                ,["id"=>5,"full_name"=>"hamid","username"=>2,"last_visit"=>"1400/03/16 16:27:36","employment_date"=>"0941400451","termination_date"=>"09151189747","is_locked"=>1]
-//            ];
-//        $users= collect($users);
         $users = DB::table('accounts')->select(['id','full_name','username','last_visit','employment_date','termination_date','is_locked']);
 
         return Datatables::of($users)
