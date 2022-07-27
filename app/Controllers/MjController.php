@@ -8,16 +8,19 @@ use Core\Database\DB;
 use Core\DataTables\DataTables;
 use Core\FileSystem\FileSystem;
 use Core\Http\Response;
+use Core\Auth\Auth;
 
 class MjController extends Controller
 {
     public function __construct()
     {
-
-     }
+        $this->middleware('Auth')->guard('Admin')->except('test_blade','test_table')->makeSafe();
+    }
 
     public function test_blade()
     {
+        print_r(Auth::user('Hello'));
+        die();
         return view('home')->with('name','ahmad')->with('family','khaliq');
     }
 
