@@ -12,5 +12,3 @@
 return [
     'key' => 'Qg+zxgGnBdGIzyjOXKgv9XHnaz8cpwOlFrHulxPLYlg='
 ];
-
-
