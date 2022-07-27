@@ -10,8 +10,6 @@
  * @link       https://github.com/AhmadKhaliqIT/phpFramework/
  */
 
-
-
 declare(strict_types=1);
 namespace Core\Crypt;
 
@@ -36,7 +34,7 @@ class Crypt{
      */
     public static function Encrypt(string $message): string
     {
-        return self::EncryptWithKey($message,base64_decode(config('sahand.key')));
+        return self::EncryptWithKey($message,base64_decode(config('Framework.key')));
     }
 
     /**
@@ -44,7 +42,7 @@ class Crypt{
      */
     public static function Decrypt(string $message): string
     {
-        return self::DecryptWithKey($message,base64_decode(config('sahand.key')));
+        return self::DecryptWithKey($message,base64_decode(config('Framework.key')));
     }
 
     /**

@@ -42,7 +42,7 @@ class Session
 
         //$this->_started = true;
 
-        $id_inside_cookie = Cookie::get('SahandSID');
+        $id_inside_cookie = Cookie::get('FrameworkSID');
 
         if ($id_inside_cookie === false) {
             $this->create();
@@ -85,7 +85,7 @@ class Session
 
 
         $this->saveToFile();
-        Cookie::set('SahandSID', $this->_SessionID);
+        Cookie::set('FrameworkSID', $this->_SessionID);
     }
 
     private function saveToFile(): void

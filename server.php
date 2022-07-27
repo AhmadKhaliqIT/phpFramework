@@ -10,10 +10,7 @@
  * @link       https://github.com/AhmadKhaliqIT/phpFramework/
  */
 
-
-
-
-if (!defined('SAHAND_START')) {
+if (!defined('FRAMEWORK_START')) {
     die('You should not be here :)');
 }
 

@@ -1,6 +1,6 @@
 {
-    "name": "sahand/framework",
-    "description": "The Sahand Framework.",
+    "name": "ahmadkhaliqit/phpframework",
+    "description": "The phpFramework.",
     "type": "project",
     "require": {
         "php": ">=8.0.0",

@@ -28,7 +28,7 @@ class WhoopsErrorLogger extends \Whoops\Handler\PrettyPageHandler
         $error = $plainTextHandler->generateResponse();
         $date = Jalalian::forge('now')->format('Y-m-j');
         $error = '['.$date.' '.date('H:i:s').']'."\n".$error."\n".str_repeat('#',120)."\n";
-        file_put_contents(BASE_PATH.'/logs/sahand-'.$date.'.log', $error,FILE_APPEND);
+        file_put_contents(BASE_PATH.'/logs/phpFramework-'.$date.'.log', $error,FILE_APPEND);
 
 
         $this->remove_old_logs();

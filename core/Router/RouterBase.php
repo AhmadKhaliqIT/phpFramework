@@ -236,13 +236,13 @@ class RouterBase{
 
         foreach ($items as $key=>$value)
         {
-            $uri = str_replace($value,'XsahandVarX',$uri);
+            $uri = str_replace($value,'XahmadVarX',$uri);
             $items[$key] = str_replace(['{','}'],'',$value);
         }
 
 
         $uri = preg_quote($uri);
-        return [str_replace('XsahandVarX','(.*)',$uri),(array)$items];
+        return [str_replace('XahmadVarX','(.*)',$uri),(array)$items];
     }
 
 

@@ -9,9 +9,6 @@
  * @license    https://github.com/AhmadKhaliqIT/phpFramework/blob/main/LICENSE
  * @link       https://github.com/AhmadKhaliqIT/phpFramework/
  */
-
-
-
 namespace Core;
 
 use InvalidArgumentException;
