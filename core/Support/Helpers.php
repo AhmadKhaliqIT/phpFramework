@@ -187,7 +187,7 @@ function redirect($to = null, $status = 302, $headers = [], $secure = null)
         return Core()->Redirector();
     }
 
-    return app('redirect')->to($to, $status, $headers, $secure);
+    return Core()->Redirector()->route ($to);
 }
 
 
