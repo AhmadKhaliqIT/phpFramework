@@ -14,7 +14,7 @@ class Test
      */
     public function handle(Request $request): mixed
     {
-        $request->add(['_TOKEN'=>'636346346346346     ']);
+        //$request->add(['_TOKEN'=>'636346346346346     ']);
 
         return $request;
     }

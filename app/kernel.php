@@ -14,6 +14,6 @@
 
 namespace App;
 return [
-    'Test',
+    'csrf',
     'StringRequests',
 ];

@@ -38,6 +38,7 @@ class MjController extends Controller
 
     public function test_blade()
     {
+        echo csrf_field();
         $x = Auth::guard('Account')->check();
         var_dump($x);
 
