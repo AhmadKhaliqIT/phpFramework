@@ -20,7 +20,7 @@ use Core\Http\Request;
 use Core\Auth\Auth as AuthBass;
 use Core\Auth\Guard;
 
-class Auth
+class csrf
 {
     private string $Current_Method;
     private array $except_methods=[];
@@ -29,8 +29,11 @@ class Auth
     public function handle(Request $request)
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST')
-            if(Core()->Session()->token() !== $request->_token)
+        {
+            if(!isset($request->_token) or Core()->Session()->token() !== $request->_token)
                 abort(403);
+        }
+
     }
 
 

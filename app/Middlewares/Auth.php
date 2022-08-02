@@ -24,6 +24,7 @@ class Auth
 {
     private string $Current_Method;
     private array $except_methods=[];
+
     /**
      * Handle an incoming request.
      *
