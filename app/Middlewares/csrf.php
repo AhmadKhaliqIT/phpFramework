@@ -33,10 +33,6 @@ class csrf
             if(!isset($request->_token) or Core()->Session()->token() !== $request->_token)
                 abort(403);
         }
-
     }
-
-
-
 
 }
