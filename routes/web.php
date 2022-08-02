@@ -12,18 +12,17 @@ namespace routes;
  */
 
 
-
-
+use Core\Http\Request;
 use Core\Router\Route;
 
 
 Route::get('/index','TestController@myTest')->name('myTest');
 Route::get('/test1','Core\Collection\test@test')->name('test');
-Route::get('/allah{id}/id',function($id){
+Route::get('/allah{id}/id',function($id,Request $req){
     return 'AllahNejad ghomie '.$id;
 })->name('test534');
 
-Route::get('/do_login','MjController@do_login')->name('do_login');
+Route::get('/do_login-{id}','MjController@do_login')->name('do_login');
 Route::get('/logout','MjController@logout')->name('logout');
 Route::get('/blade','MjController@test_blade')->name('blade');
 Route::get('/table','MjController@test_table')->name('table');

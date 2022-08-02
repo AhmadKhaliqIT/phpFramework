@@ -18,6 +18,7 @@ use Core\Blade\View;
 use Core\Http\Response;
 use Exception;
 use InvalidArgumentException;
+use ReflectionFunction;
 use ReflectionMethod;
 use function Symfony\Component\Translation\t;
 
@@ -161,6 +162,29 @@ class RouterBase{
     }
 
 
+    private function create_parameters_of_method($definedMethodParameters,$params)
+    {
+        $readyToPassParameters = [];
+        foreach ($definedMethodParameters as $param) {
+            //$param is an instance of ReflectionParameter
+            $argName = $param->getName();
+            $ClassName = $param->getClass();
+            if(!is_null($ClassName))
+            {
+                $CoreClassName = Core()->exist($ClassName->name,true);
+                if($CoreClassName !== false)
+                {
+                    $readyToPassParameters[$argName] = Core()->getInstanceOf($CoreClassName);
+                    continue;
+                }
+            }
+
+            if(array_key_exists($argName,$params))
+                $readyToPassParameters[$argName] = $params[$argName];
+        }
+        return $readyToPassParameters;
+    }
+
     /**
      * @throws Exception
      */
@@ -181,7 +205,11 @@ class RouterBase{
             if ($this->hasBrackets($route['uri']) and (!is_array($params) or count($params)<=0) or !isset($params[0]) or empty($params[0]))
                 throw new InvalidArgumentException('No value passed to method.');
 
-            if($return_value = call_user_func_array($route['function'], $params)) {
+            $reflection = new ReflectionFunction($route['function']);
+            $definedMethodParameters  = $reflection->getParameters();
+            $readyToPassParameters = $this->create_parameters_of_method($definedMethodParameters,$params);
+
+            if($return_value = call_user_func_array($route['function'], $readyToPassParameters)) {
                 echo $return_value;
             }
         }
@@ -190,25 +218,9 @@ class RouterBase{
 
             $route['function'] = 'App\Controllers\\'.$route['function'];
 
-            $readyToPassParameters = [];
-            $definedMethodParameters = $this->fromClassMethodString($route['function']);
-            foreach ($definedMethodParameters as $param) {
-                //$param is an instance of ReflectionParameter
-                $argName = $param->getName();
-                $ClassName = $param->getClass();
-                if(!is_null($ClassName))
-                {
-                    $CoreClassName = Core()->exist($ClassName->name,true);
-                    if($CoreClassName !== false)
-                    {
-                        $readyToPassParameters[$argName] = Core()->getInstanceOf($CoreClassName);
-                        continue;
-                    }
-                }
 
-                if(array_key_exists($argName,$params))
-                    $readyToPassParameters[$argName] = $params[$argName];
-            }
+            $definedMethodParameters = $this->fromClassMethodString($route['function']);
+            $readyToPassParameters = $this->create_parameters_of_method($definedMethodParameters,$params);
             $response = callMethod($route['function'],$readyToPassParameters,true);
 
             if ($response instanceof View){
