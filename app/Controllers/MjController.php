@@ -7,32 +7,42 @@ use Core\Blade\View;
 use Core\Database\DB;
 use Core\DataTables\DataTables;
 use Core\FileSystem\FileSystem;
+use Core\Http\Request;
 use Core\Http\Response;
 use Core\Auth\Auth;
+use Exception;
 
 class MjController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('Auth')->guard('Admin')->except('test_blade','do_login')->makeSafe();
+        $this->middleware('Auth')->guard('Account')->except('test_blade','do_login')->makeSafe();
     }
 
-    public function do_login()
+
+    /**
+     * @throws Exception
+     */
+    public function do_login($id, Request $req)
     {
-        $x = Auth::guard('Admin')->attempt(['name'=>'ahmad']);
+        $x = Auth::guard('Account')->attempt(['username'=>'801204','password'=>'989796']);
         print_r($x);
     }
 
+
     public function logout()
     {
-        $x = Auth::guard('Admin')->logout();
+        $x = Auth::guard('Account')->logout();
         print_r($x);
     }
 
     public function test_blade()
     {
-        $x = Auth::guard('Admin')->check();
+        $x = Auth::guard('Account')->check();
         var_dump($x);
+
+        print_r(Auth::user());
+
         die('hello');
         return view('home')->with('name','ahmad')->with('family','khaliq');
     }

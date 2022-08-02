@@ -1,6 +1,11 @@
 <?php
 namespace Core\Auth;
 /* بسم الله الرحمن الرحیم */
+
+use Core\Crypt\Crypt;
+use Core\Database\DB;
+use Exception;
+
 /**
  * phpFramework
  *
@@ -13,17 +18,27 @@ namespace Core\Auth;
 
 class Guard{
 
-    private object $Logged_user_Db_Data;
+    private object $Logged_user_DB_Data;
     public string $_guard;
+    public string $_table;
 
-    public function __construct($guard)
+    public function __construct($guardName,$guardTable)
     {
-        $this->_guard = $guard;
+        $this->_guard = $guardName;
+        $this->_table = $guardTable;
     }
+
 
     public function user(): object
     {
-        return (object)['name'=>'user'];
+        $user_id = Session()->get('Auth_'.$this->_guard,0);
+        if (empty($Logged_user_DB_Data))
+            try {
+                $Logged_user_DB_Data = DB::table($this->_table)->whereId($user_id)->first();
+            } catch (Exception $e) {
+                die('Error: Auth Could not fetch user from database');
+            }
+        return $Logged_user_DB_Data;
     }
 
     public function logout()
@@ -36,15 +51,30 @@ class Guard{
         //todo
     }
 
-    public function attempt(array $Login_data)
+    /**
+     * @throws Exception
+     */
+    public function attempt(array $loginData): bool
     {
-        Session()->put('Auth_'.$this->_guard,$Login_data);
+        $password = $loginData['password'];
+        unset($loginData['password']);
+        $DB_Data = DB::table($this->_table)->where($loginData)->first();
+        if (isset($DB_Data->id))
+        {
+            if (Crypt::verify($password,$DB_Data->password))
+            {
+                Session()->put('Auth_'.$this->_guard,$DB_Data->id);
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public function check(): bool
     {
-        $auth_sess = Session()->get('Auth_'.$this->_guard,[]);
-        return !empty($auth_sess);
+        $auth_sess = Session()->get('Auth_'.$this->_guard,0);
+        return ($auth_sess>0);
     }
 
 
