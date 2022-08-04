@@ -93,6 +93,7 @@ class RouterBase{
             if (preg_match('#'.$route['uri'].'#u', $path, $matches)) {
                 //$path_match_found = true;
                 // Cast allowed method to array if it's not one already, then run through all methods
+
                 foreach ((array)$route['method'] as $allowedMethod) {
                     // Check method match
                     if (strtolower($method) === strtolower($allowedMethod)) {
@@ -143,7 +144,7 @@ class RouterBase{
 
     private function error_page(int $error_number)
     {
-        die('error:'.$error_number);
+        abort($error_number);
     }
 
 

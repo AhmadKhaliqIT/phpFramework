@@ -158,6 +158,24 @@ function e($value, $doubleEncode = false): string
 
 #[NoReturn] function abort($code, array $headers = [])
 {
+    if ($code==404)
+    {
+        $html = file_get_contents(BASE_PATH.'/core/Support/error_pages/404.html');
+        echo $html;
+    }
+
+    if ($code==403)
+    {
+        $html = file_get_contents(BASE_PATH.'/core/Support/error_pages/403.html');
+        echo $html;
+    }
+
+    if ($code==500)
+    {
+        $html = file_get_contents(BASE_PATH.'/core/Support/error_pages/500.html');
+        echo $html;
+    }
+
     http_response_code($code);
 
     foreach ($headers as $header)
