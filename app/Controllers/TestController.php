@@ -2,103 +2,102 @@
 
 namespace App\Controllers;
 
+use Core\Blade\Blade;
+use Core\Blade\View;
 use Core\Database\DB;
+use Core\DataTables\DataTables;
+use Core\FileSystem\FileSystem;
 use Core\Http\Request;
-use Core\Database\Builder;
-use Morilog\Jalali\Jalalian;
-
+use Core\Http\Response;
+use Core\Auth\Auth;
+use Exception;
 
 class TestController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('Auth');
+        $this->middleware('Auth')->guard('Account')->except('test_blade','do_login')->makeSafe();
     }
-
-
-    function pingAddress($ip) {
-        $fp = fSockOpen($ip,80);
-        if($fp) { $status=0; fclose($fp); } else { $status=1; }
-    }
-
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
-    public function myTest(Request $request)
+    public function do_login($id, Request $req)
     {
-//        $q = DB::table('employees')
-//            ->where('name','like','%حمiید%')
-//            ->doesntExist();
-
-        //$res = DB::table('employees')->whereId(11)->decrement('family_info_update_ts');
+        $x = Auth::guard('Account')->attempt(['username'=>'801204','password'=>'989796']);
+        print_r($x);
+    }
 
 
-//        $res = DB::table('employees')->insertGetId(
-//            [
-//                'gender'          => '1',
-//                'name'            => '2',
-//                'family'          => '3',
-//                'full_name'       => '4',
-//                'shenasnameh'     => '5',
-//                'melli'           => '6',
-//                'birthday'        => '7',
-//                'birthplace'      => '8',
-//                'father_name'     => '9',
-//                'mobile'          => '10',
-//                'phone'           => '11',
-//                'email'           => '12',
-//                'address'         => '13',
-//                'skills'          => '14',
-//                'reg_date_time'   => Jalalian::forge('now')->format('Y/m/d H:i:s')
-//            ]
-//        );
+    public function logout()
+    {
+        $x = Auth::guard('Account')->logout();
+        print_r($x);
+    }
+
+    public function test_blade()
+    {
+        echo csrf_field();
+        $x = Auth::guard('Account')->check();
+        var_dump($x);
+
+        print_r(Auth::user());
+
+        die('hello');
+        return view('home')->with('name','ahmad')->with('family','khaliq');
+    }
+
+    public function test_table()
+    {
+
+        $users = DB::table('accounts')->select(['id','full_name','username','last_visit','employment_date','termination_date','is_locked']);
+
+        return Datatables::of($users)
+            ->addColumn('test', function ($DATA)
+            {
+                return $DATA->id+1;
+            })
+            ->editColumn('last_visit', function ($DATA)
+            {
+                return '<center>' . $DATA->last_visit . '<center>';
+            })
+            ->editColumn('is_locked', function ($DATA)
+            {
+                return ($DATA->is_locked == 1) ? '<span>enable</span>' : '<span>disable</span>';
+            })
+            ->rawColumns([ 'is_locked', 'section_id', 'marriage', 'children',  'full_name']) //'last_visit',
+            ->make();
+    }
 
 
-        $res = DB::table('employees')->updateOrInsert(
-            [
-                'melli'           => '44448',
-                'mobile'          => '10'
-            ],
-            [
-                'gender'          => '1',
-                'name'            => 'ff',
-                'family'          => 'ff',
-                'full_name'       => 'ff',
-                'shenasnameh'     => 'ff',
-                'melli'           => '4444',
-                'birthday'        => '76',
-                'birthplace'      => '86',
-                'father_name'     => '96',
-                'mobile'          => '10',
-                'phone'           => '116',
-                'email'           => '126',
-                'address'         => '136',
-                'skills'          => '146',
-                'reg_date_time'   => Jalalian::forge('now')->format('Y/m/d H:i:s')
-            ]
-        );
+    public function test_response_image()
+    {
 
+        $path='ae847d71a5cc7d457a7fff7f14e99943d154c179_1607951697.jpg';
 
 
 
 
-//        echo DB::table('employees')->LastInsertedId();
+        $file = FileSystem::get($path);
+        $type = FileSystem::mimeType($path);
 
-        var_dump($res);
 
-//        foreach ($q as $a)
-//            echo $a->id;
 
-        /*dd($id);
 
-        //dd($Request->all());
+        return (new Response($file, 200))
+            ->header('Content-Type', $type);
 
-        //app('Session')->get('test');
-        Session()->put('test','11');
-        Session()->put('test2','11');
 
-        print_r(Session()->all());*/
+
+    }
+
+
+    public function test_response_json()
+    {
+
+
+        return response()->json(['a'=>'ff']);
+
 
 
     }

@@ -65,6 +65,10 @@ class RouterBase{
 
         $path = urldecode($path);
 
+        if (empty($path))
+            $path = '/';
+
+
         $method = $_SERVER['REQUEST_METHOD'];
 
         //print_r(RouterStorage::$_Storage);
