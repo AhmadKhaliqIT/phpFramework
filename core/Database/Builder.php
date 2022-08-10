@@ -189,8 +189,13 @@ class Builder {
         return null;
     }
 
-    public function pluck() {
-        /* todo waiting */
+    public function pluck($col) {
+        self::select($col);
+        $rows = self::get();
+        $output = [];
+        foreach ($rows as $row)
+            $output[] = $row->$col;
+        return collect($output);
     }
 
 
