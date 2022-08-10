@@ -17,5 +17,5 @@ class ExampleController extends Controller
     public function ExampleFunction()
     {
         return view('test');
-    } 
+    }
 }

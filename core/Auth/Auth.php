@@ -20,14 +20,14 @@ class Auth{
 
     private static array $Guards=[];
     public  static string $_current_middleware_guard;
-    private static array $_config_guards_tables=[];
+    private static array $_config_guards_configs=[];
 
     public static function init()
     {
         $config_g = config('Auth.guards');
         foreach ($config_g as $config)
         {
-            self::$_config_guards_tables[$config['name']] = $config['table'];
+            self::$_config_guards_configs[$config['name']] = (object)$config;
         }
     }
 
@@ -43,14 +43,14 @@ class Auth{
 
     public static function guard($guard): object
     {
-        if (empty(self::$_config_guards_tables))
+        if (empty(self::$_config_guards_configs))
             self::init();
 
-        if (!array_key_exists($guard,self::$_config_guards_tables))
+        if (!array_key_exists($guard,self::$_config_guards_configs))
             die('Error: Guard '.$guard . ' does not exist!');
 
         if (!array_key_exists($guard,self::$Guards))
-            self::$Guards[$guard] = new Guard($guard,self::$_config_guards_tables[$guard]);
+            self::$Guards[$guard] = new Guard($guard,self::$_config_guards_configs[$guard]->table,self::$_config_guards_configs[$guard]->login_route);
 
         return self::$Guards[$guard];
     }

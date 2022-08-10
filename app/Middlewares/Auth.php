@@ -68,7 +68,7 @@ class Auth
         if(AuthBass::Guard(AuthBass::$_current_middleware_guard)->check())
             return true;
 
-        //redirect('test_response_json');
+        AuthBass::Guard(AuthBass::$_current_middleware_guard)->redirect_to_login_form();
         die('please login');
     }
 

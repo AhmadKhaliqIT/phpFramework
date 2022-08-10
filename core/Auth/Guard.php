@@ -21,11 +21,13 @@ class Guard{
     private object $Logged_user_DB_Data;
     public string $_guard;
     public string $_table;
+    public string $_login_route;
 
-    public function __construct($guardName,$guardTable)
+    public function __construct($guardName,$guardTable,$guardLoginRoute)
     {
         $this->_guard = $guardName;
         $this->_table = $guardTable;
+        $this->_login_route = $guardLoginRoute;
     }
 
 
@@ -77,6 +79,10 @@ class Guard{
         return ($auth_sess>0);
     }
 
+    public function redirect_to_login_form()
+    {
+        redirect($this->_login_route);
+    }
 
 }
 

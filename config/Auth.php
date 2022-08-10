@@ -16,11 +16,13 @@ return [
     'guards' => [
         [
             'name' => 'Admin',
-            'table'=> 'admins'
+            'table'=> 'admins',
+            'login_route'=> 'auth_admins_login'
         ],
         [
             'name' => 'Account',
-            'table'=> 'accounts'
+            'table'=> 'accounts',
+            'login_route'=> 'auth_accounts_login'
         ],
     ]
 ];
