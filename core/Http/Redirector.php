@@ -34,6 +34,11 @@ class Redirector{
     public function route($name, $parameters = [])
     {
         $url=route($name,$parameters);
+        return $this->url($url);
+    }
+
+    public function url($url): static
+    {
         return new static(header('Location: ' . $url));
     }
 

@@ -205,7 +205,10 @@ function redirect($to = null, $status = 302, $headers = [], $secure = null)
         return Core()->Redirector();
     }
 
-    return Core()->Redirector()->route ($to);
+    if (filter_var($to, FILTER_VALIDATE_URL) or str_starts_with($to,'/'))
+        return Core()->Redirector()->url($to);
+
+    return Core()->Redirector()->route($to);
 }
 
 
