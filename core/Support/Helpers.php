@@ -36,7 +36,7 @@ function base(): string
 }
 
 
-function public_path($path): string
+function public_path($path=''): string
 {
     return PUBLIC_PATH.DIRECTORY_SEPARATOR.$path;
 }
