@@ -73,13 +73,14 @@ class RouterBase{
 
         //print_r(RouterStorage::$_Storage);
 
+
         $route_match_found = false;
 
 
         foreach (RouterStorage::$_Storage as $id=>$route) {
             if (!$this->hasBrackets($route['uri']))
             {
-                if ($route['uri'] == $path)
+                if ($route['uri'] == $path and $method==$route['method'])
                 {
                     $route_match_found = true;
                     $this->call_route_function($id);
