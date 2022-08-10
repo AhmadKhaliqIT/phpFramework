@@ -65,7 +65,7 @@ class ManageBlade{
     public function MakeExtendView($view)
     {
         $template = new Blade();
-        echo $template->view($view,$this->sections);
+        echo $template->make($view,$this->sections);
     }
 
 

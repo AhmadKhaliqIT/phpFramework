@@ -10,9 +10,9 @@
  * @link       https://github.com/AhmadKhaliqIT/phpFramework/
  */
 
-
-
 namespace Core\Blade;
+use Core\Auth\Auth;
+use Core\Database\DB;
 use Core\FileSystem\FileSystem;
 use Core\Support\Arr;
 use Core\Support\Str;
