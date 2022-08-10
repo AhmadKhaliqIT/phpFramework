@@ -237,7 +237,8 @@ class RouterBase{
             }
             else
             {
-                echo $response;
+                if (is_string($response))
+                    echo $response;
             }
         }
     }
