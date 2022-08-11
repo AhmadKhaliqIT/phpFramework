@@ -32,7 +32,21 @@ class RouterBase{
         foreach (RouterStorage::$_Storage as $id=>$route) {
             if ($route['name'] == $name) {
                 if (!$this->hasBrackets($route['uri']))
+                {
+                    if (!empty($params))
+                    {
+                        $route['uri'] .= '?';
+                        $and = '';
+                        foreach ($params as $param=>$value)
+                        {
+                            $route['uri'].= $and.$param.'='.$value;
+                            $and = '&';
+                        }
+                    }
+
                     return $route['uri'];
+                }
+
                 foreach ($params as $param=>$value)
                 {
                     $route['uri'] = str_replace('{'.$param.'}',$value,$route['uri']);
