@@ -129,7 +129,7 @@ class Request
     public function validate($rules)
     {
         $t = new Validator($this->all(), $rules);
-        dd($t->messages);
+        //dd($t->messages);
     }
 
 
