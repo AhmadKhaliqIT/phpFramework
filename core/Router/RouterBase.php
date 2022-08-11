@@ -230,7 +230,8 @@ class RouterBase{
             $readyToPassParameters = $this->create_parameters_of_method($definedMethodParameters,$params);
 
             if($return_value = call_user_func_array($route['function'], $readyToPassParameters)) {
-                echo $return_value;
+                if (is_string($return_value))
+                    echo $return_value;
             }
         }
         else
