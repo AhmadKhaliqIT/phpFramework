@@ -216,14 +216,14 @@ function redirect($to = null, $status = 302, $headers = [], $secure = null)
 function request($key = null, $default = null)
 {
     if (is_null($key)) {
-        return app('request');
+        return Core()->Request();
     }
 
     if (is_array($key)) {
-        return app('request')->only($key);
+        return Core()->Request()->only($key);
     }
 
-    $value = app('request')->__get($key);
+    $value = Core()->Request()->__get($key);
 
     return is_null($value) ? value($default) : $value;
 }
@@ -231,8 +231,6 @@ function request($key = null, $default = null)
 
 function response($content = '', $status = 200, array $headers = [])
 {
-
-
     return new \Core\Http\Response();
 }
 

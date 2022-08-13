@@ -42,12 +42,9 @@ class ManageBlade{
     }
 
 
-
     /**
      * Stop injecting content into a section.
      *
-     * @param  bool  $overwrite
-     * @throws \InvalidArgumentException
      */
     public function stopSection()
     {
@@ -64,9 +61,11 @@ class ManageBlade{
 
     public function MakeExtendView($view)
     {
-        $template = new Blade();
+        $template = new View();
         echo $template->make($view,$this->sections);
     }
+
+
 
 
 }

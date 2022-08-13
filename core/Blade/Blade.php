@@ -128,7 +128,7 @@ class Blade
     public function make(string $view, array $context = []): bool|string
     {
 
-       $__env=new ManageBlade();
+       $__env = new ManageBlade();
        extract($context);
 
        $compiled_path= $this->CompileBladeFile( $view);
@@ -136,7 +136,7 @@ class Blade
        ob_start();
 
        include ($compiled_path);
-        return ob_get_clean();
+       return ob_get_clean();
 
 
     }
@@ -149,7 +149,7 @@ class Blade
 
         $file_path=$this->findViewInPath($view);
 
-        $compiled_path=$this->cache_path.'/'.sha1($file_path).'.php';
+        $compiled_path=$this->cache_path.'/'.$view.'_'.sha1($file_path).'.php';
 
         /* اگر فایل وجود داشت و ویرایش ننشده بود دوباره کامپایل نمی شود */
         if ( Filesystem::exists($compiled_path) &&  (Filesystem::lastModified($file_path) == Filesystem::lastModified($compiled_path))){

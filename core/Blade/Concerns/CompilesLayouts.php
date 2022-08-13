@@ -62,8 +62,7 @@ trait CompilesLayouts
     protected function compileYield($expression)
     {
         $expression=substr($expression, 2, -2);
-
-        return "<?php echo $$expression; ?>";
+        return "<?php if (isset($$expression)) echo $$expression; ?>";
     }
 
     /**
