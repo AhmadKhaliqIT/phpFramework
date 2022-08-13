@@ -22,8 +22,9 @@ use Core\Auth\Guard;
 
 class Auth
 {
-    private string $Current_Method;
+    private array $Current_Methods_stack;
     private array $except_methods=[];
+    private string $Current_Guard_name;
 
     /**
      * Handle an incoming request.
@@ -39,7 +40,7 @@ class Auth
             if($trace['function']=='callMethod')
             {
                 $method = explode('@',$trace['args'][0]);
-                $this->Current_Method = strtolower($method[1]);
+                $this->Current_Methods_stack[] = strtolower($method[1]);
             }
         }
         return $this;
@@ -47,7 +48,11 @@ class Auth
 
     public function guard($guardName): Auth
     {
-        AuthBass::$_current_middleware_guard = $guardName;
+        $backtrace = debug_backtrace();
+        $backtrace[1]["object"]->middlewareStorage('AuthGuardName',$guardName);
+        $this->Current_Guard_name = $guardName;
+        //echo ((AuthBass::$_current_middleware_guard ?? 'notDefined') .' - '. $guardName);
+        //AuthBass::$_current_middleware_guard = $guardName;
         return $this;
     }
 
@@ -61,16 +66,20 @@ class Auth
 
     public function makeSafe()
     {
-        if (in_array($this->Current_Method,$this->except_methods))
+
+        if ($this->in_array_any($this->Current_Methods_stack,$this->except_methods))
             return true;
 
-
-        if(AuthBass::Guard(AuthBass::$_current_middleware_guard)->check())
+        if(AuthBass::Guard($this->Current_Guard_name)->check())
             return true;
 
-        AuthBass::Guard(AuthBass::$_current_middleware_guard)->redirect_to_login_form();
+        AuthBass::Guard($this->Current_Guard_name)->redirect_to_login_form();
         die('please login');
     }
 
+    function in_array_any($needles, $haystack): bool
+    {
+        return !empty(array_intersect($needles, $haystack));
+    }
 
 }

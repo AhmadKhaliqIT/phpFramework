@@ -34,10 +34,16 @@ class Auth{
 
     public static function user(): object
     {
-        if (!array_key_exists(self::$_current_middleware_guard,self::$Guards))
+        $backtrace = debug_backtrace();
+        $GuardName = $backtrace[1]["object"]->middlewareStorage('AuthGuardName');
+//        print_r(self::$_current_middleware_guard);
+//        echo "\n";
+//        print_r(self::$Guards);
+
+        if (!array_key_exists($GuardName,self::$Guards))
             die('Error: Guard is not defined!');
 
-        return self::$Guards[self::$_current_middleware_guard]->user();
+        return self::$Guards[$GuardName]->user();
     }
 
 

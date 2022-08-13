@@ -18,6 +18,19 @@ use Exception;
 
 class Controller
 {
+
+    public array $_Middlewares_storage;
+
+    public function middlewareStorage($key,$new_Value = null)
+    {
+        if (is_null($new_Value))
+            return $this->_Middlewares_storage[$key];
+
+        $this->_Middlewares_storage[$key] = $new_Value;
+    }
+
+
+
     /**
      * Register middleware on the controller.
      *
