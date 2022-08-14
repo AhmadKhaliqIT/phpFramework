@@ -116,23 +116,22 @@ class QueryDataTable extends DataTableAbstract
     public function builder_data(): bool|string
     {
         $DB_DATA = $this->builder->get();
-
         foreach ($DB_DATA as $id => $row)
         {
-
-
+            $row_for_edit = clone($row);
+            $row_for_append = clone($row);
             foreach($this->columnDef['edit'] as $edit)
             {
                 $ColName = $edit['name'];
                 if (is_callable($edit['content']))
-                    $DB_DATA[$id]->$ColName = $edit['content']($row);
+                    $DB_DATA[$id]->$ColName = $edit['content']($row_for_edit);
             }
 
             foreach($this->columnDef['append'] as $append)
             {
                 $ColName = $append['name'];
                 if (is_callable($append['content']))
-                    $DB_DATA[$id]->$ColName = $append['content']($row);
+                    $DB_DATA[$id]->$ColName = $append['content']($row_for_append);
             }
 
 
