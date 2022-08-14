@@ -14,11 +14,12 @@
 
 namespace Core\Database;
 
+use Closure;
 use Exception;
 
 class Builder {
-    private string $_table;
-    private string $_query;
+    private string $_table='';
+    private string $_query='';
     public  array $_select=[];
     private array $_where=[];
     private array $_insert_update_values=[];
@@ -26,6 +27,9 @@ class Builder {
     private string $_offset='';
     private string $_groupBy='';
     private array  $_orderBy=[];
+    private int  $_whereANDCount = 0;
+    private int  $_whereORCount = 0;
+
     private ?\mysqli $_connection;
 
 
@@ -67,89 +71,6 @@ class Builder {
         return $this;
     }
 
-    public function arrayToWhere($array,$type = 'AND') //done
-    {
-        foreach ($array as $key=>$value)
-        {
-            $value = '"'.$this->_connection->real_escape_string($value).'"';
-            $this->_where[]= [$type,$key,'=',$value];
-        }
-    }
-
-
-    public function where($col,$operator=null,$value=null): Builder //done
-    {
-        if(is_array($col))
-        {
-            $this->arrayToWhere($col);
-            return $this;
-        }
-
-        if ($value == null)
-        {
-            $value = $operator;
-            $operator = '=';
-        }
-
-        $value = '"'.$this->_connection->real_escape_string($value).'"';
-
-        $this->_where[]= ['AND',$col,$operator,$value];
-        return $this;
-    }
-
-    public function orWhere($col,$operator=null,$value=null): Builder //done
-    {
-        if(is_array($col))
-        {
-            $this->arrayToWhere($col,'OR');
-            return $this;
-        }
-
-        if ($value == null)
-        {
-            $value = $operator;
-            $operator = '=';
-        }
-
-        $value = '"'.$this->_connection->real_escape_string($value).'"';
-
-        $this->_where[]= ['OR',$col,$operator,$value];
-        return $this;
-    }
-
-    /**
-     * @throws Exception
-     */
-    public function whereIn($col, $array): Builder //done
-    {
-        for ($i=0;$i<count($array);$i++)
-        {
-            $array[$i] = '"'.$this->_connection->real_escape_string($array[$i]).'"';
-
-        }
-
-        if (empty($array))
-            $array[] = 'NULL';
-
-        $this->_where[]= ['AND',$col,'IN','('.implode(',',$array).')'];
-        return $this;
-    }
-
-    public function whereNotIn($col,$array): Builder
-    {
-        for ($i=0;$i<count($array);$i++)
-        {
-            $array[$i] = '"'.$this->_connection->real_escape_string($array[$i]).'"';
-        }
-        $this->_where[]= ['AND',$col,'NOT IN','('.implode(',',$array).')'];
-        return $this;
-    }
-
-    public function whereId($id): Builder  //done
-    {
-        self::where('id',$id);
-        return $this;
-    }
 
     public function orderBy($col,$sort='ASC'): Builder  //done
     {
@@ -206,12 +127,129 @@ class Builder {
     }
 
 
-    private function prepare_where_clause(): string
+
+    public function arrayToWhere($array,$type = 'AND') //done
+    {
+        foreach ($array as $key=>$value)
+        {
+            $value = '"'.$this->_connection->real_escape_string($value).'"';
+            $this->_where[]= [$type,$key,'=',$value];
+        }
+    }
+
+    private function whereNested(Closure $callback, $boolean = 'AND')
+    {
+        call_user_func($callback, $query = $this->cloneWithout(['_table','_query','_select','_where']));
+        if ($boolean == 'AND')
+            $this->where('','',$query->getNestedWhere(),true);
+        else
+            $this->orWhere('','',$query->getNestedWhere(),true);
+    }
+
+    public function where($col,$operator=null,$value=null,$safe=false): Builder //done
+    {
+        if(is_array($col))
+        {
+            $this->arrayToWhere($col);
+            return $this;
+        }
+
+        if ($col instanceof Closure) {
+            $this->whereNested($col);
+            return $this;
+        }
+
+
+
+        if ($value == null)
+        {
+            $value = $operator;
+            $operator = '=';
+        }
+
+        if (!$safe)
+            $value = '"'.$this->_connection->real_escape_string($value).'"';
+
+        $this->_where[]= ['AND',$col,$operator,$value];
+        return $this;
+    }
+
+    public function orWhere($col,$operator=null,$value=null,$safe=false): Builder //done
+    {
+        
+        if(is_array($col))
+        {
+            $this->arrayToWhere($col,'OR');
+            return $this;
+        }
+
+        if ($col instanceof Closure) {
+            $this->whereNested($col,'OR');
+            return $this;
+        }
+
+
+        if ($value == null)
+        {
+            $value = $operator;
+            $operator = '=';
+        }
+
+        if (!$safe)
+            $value = '"'.$this->_connection->real_escape_string($value).'"';
+
+        $this->_where[]= ['OR',$col,$operator,$value];
+        return $this;
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function whereIn($col, $array): Builder //done
+    {
+        
+        for ($i=0;$i<count($array);$i++)
+        {
+            $array[$i] = '"'.$this->_connection->real_escape_string($array[$i]).'"';
+
+        }
+
+        if (empty($array))
+            $array[] = 'NULL';
+
+        $this->_where[]= ['AND',$col,'IN','('.implode(',',$array).')'];
+        return $this;
+    }
+
+    public function whereNotIn($col,$array): Builder
+    {
+        
+        for ($i=0;$i<count($array);$i++)
+        {
+            $array[$i] = '"'.$this->_connection->real_escape_string($array[$i]).'"';
+        }
+        $this->_where[]= ['AND',$col,'NOT IN','('.implode(',',$array).')'];
+        return $this;
+    }
+
+    public function whereId($id): Builder  //done
+    {
+        self::where('id',$id);
+        return $this;
+    }
+
+    public function getNestedWhere(): string
+    {
+        return '('.$this->prepare_where_clause(false).')';
+    }
+
+    private function prepare_where_clause($includeWhere=true): string
     {
         $WHERE_Clause = '';
         if(count($this->_where) > 0)
         {
-            $WHERE_Clause = ' WHERE';
+            if ($includeWhere)
+                $WHERE_Clause = ' WHERE';
             $is_first = true;
             foreach ($this->_where as $where)
             {
