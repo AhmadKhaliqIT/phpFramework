@@ -279,7 +279,10 @@ class Builder {
 
 
         if(count($this->_orderBy)>0)
+        {
             $query .= ' ORDER BY '.implode(',',$this->_orderBy);
+        }
+
 
         if($this->_limit != '')
             $query .= ' LIMIT '.$this->_limit;

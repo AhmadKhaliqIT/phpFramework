@@ -60,12 +60,17 @@ class QueryDataTable extends DataTableAbstract
 
     protected function defaultOrdering()
     {
+
         foreach ($this->request->order as $orderCOl)
         {
-            $this->builder->orderBy(
-                $this->request->columns[$orderCOl['column']]['data'],
-                $orderCOl['dir']
-            );
+            if (isset($this->request->columns[$orderCOl['column']]['data']) and !empty($this->request->columns[$orderCOl['column']]['data']))
+            {
+                $this->builder->orderBy(
+                    $this->request->columns[$orderCOl['column']]['data'],
+                    $orderCOl['dir']
+                );
+            }
+
 
         }
     }
