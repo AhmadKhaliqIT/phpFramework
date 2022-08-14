@@ -48,6 +48,7 @@ class Builder {
      */
     public function rawQuery ($query): \mysqli_result|bool
     {
+        //echo $query."\n";
         $result = $this->_connection->query($query);
         if(isset($this->_connection->error) and !empty($this->_connection->error))
             throw new Exception('Database Error: '.$this->_connection->error);
@@ -121,13 +122,14 @@ class Builder {
      */
     public function whereIn($col, $array): Builder //done
     {
-        if (empty($array))
-            throw new Exception('Empty Array passed to whereIn method.');
         for ($i=0;$i<count($array);$i++)
         {
             $array[$i] = '"'.$this->_connection->real_escape_string($array[$i]).'"';
 
         }
+
+        if (empty($array))
+            $array[] = 'NULL';
 
         $this->_where[]= ['AND',$col,'IN','('.implode(',',$array).')'];
         return $this;
