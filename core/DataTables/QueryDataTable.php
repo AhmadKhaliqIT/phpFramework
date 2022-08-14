@@ -78,14 +78,18 @@ class QueryDataTable extends DataTableAbstract
     protected function globalSearch($keyword)
     {
         //echo $keyword;
-        foreach ($this->request->columns as $col)
-        {
-            if($col['searchable']=='true')
+        $cols = $this->request->columns;
+        $this->builder->Where(function ($query) use ($cols,$keyword){
+            foreach ($cols as $col)
             {
-                $this->builder->orWhere($col['data'],'LIKE','%'.$keyword.'%');
-            }
+                if($col['searchable']=='true')
+                {
+                    $query->orWhere($col['data'],'LIKE','%'.$keyword.'%');
+                }
 
-        }
+            }
+        });
+
     }
 
 
