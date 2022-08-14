@@ -33,6 +33,11 @@ $__Core = new Core;
 $_connection = null;
 if(config('Database.ConnectAutomatically',false))
 {
+
+    /* activate reporting */
+    $driver = new mysqli_driver();
+    $driver->report_mode = MYSQLI_REPORT_OFF;
+
     try {
         $_connection = new mysqli(
             config('Database.servername'),

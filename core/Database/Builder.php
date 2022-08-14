@@ -26,7 +26,7 @@ class Builder {
     private string $_offset='';
     private string $_groupBy='';
     private array  $_orderBy=[];
-    private $_connection;
+    private ?\mysqli $_connection;
 
 
     public function __construct() //done
@@ -116,8 +116,13 @@ class Builder {
         return $this;
     }
 
-    public function whereIn($col,$array): Builder //done
+    /**
+     * @throws Exception
+     */
+    public function whereIn($col, $array): Builder //done
     {
+        if (empty($array))
+            throw new Exception('Empty Array passed to whereIn method.');
         for ($i=0;$i<count($array);$i++)
         {
             $array[$i] = '"'.$this->_connection->real_escape_string($array[$i]).'"';
@@ -463,7 +468,7 @@ class Builder {
      * @throws Exception
      */
     public function count($columns = '*') {//done
-        $res = $this->cloneWithout(['_select','_offset','_limit'])->select(['count('.$columns.') as output'])->get();
+        $res = $this->cloneWithout(['_select','_offset','_limit','_orderBy'])->select(['count('.$columns.') as output'])->get();
         if (isset($res[0]) and isset($res[0]->output))
             return $res[0]->output;
         return null;
@@ -508,6 +513,10 @@ class Builder {
             }
         });
     }
+
+
+
+
 
 
 }
