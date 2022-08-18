@@ -251,6 +251,11 @@ class Str
         return rtrim($matches[0]).$end;
     }
 
+    public static function words_count($words)
+    {
+        return count(explode(' ',$words));
+    }
+
     /**
      * Parse a Class@method style callback into class and method.
      *
