@@ -14,5 +14,6 @@
 
 
 return [
-    'key' => 'Qg+zxgGnBdGIzyjOXKgv9XHnaz8cpwOlFrHulxPLYlg='
+    'key' => 'Qg+zxgGnBdGIzyjOXKgv9XHnaz8cpwOlFrHulxPLYlg=',
+    'domain' => 'http://saam.it'
 ];
