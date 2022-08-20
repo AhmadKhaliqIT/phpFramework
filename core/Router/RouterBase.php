@@ -44,14 +44,14 @@ class RouterBase{
                         }
                     }
 
-                    return $route['uri'];
+                    return config('Framework.domain').$route['uri'];
                 }
 
                 foreach ($params as $param=>$value)
                 {
                     $route['uri'] = str_replace('{'.$param.'}',$value,$route['uri']);
                 }
-                return $route['uri'];
+                return config('Framework.domain').$route['uri'];
             }
         }
         throw new InvalidArgumentException('Route '.$name . ' does not exist.');
