@@ -73,9 +73,11 @@ class RouterBase{
         $path = '/';
 
         // If there is a path available
-        if (isset($parsed_url['path'])) {
-            $path = rtrim($parsed_url['path'], '/');
-        }
+//        if (isset($parsed_url['path'])) {
+//            $path = rtrim($parsed_url['path'], '/');
+//        }
+
+        $path = $parsed_url['path'];
 
         $path = urldecode($path);
 
@@ -90,6 +92,7 @@ class RouterBase{
 
         $route_match_found = false;
 
+        //print_r($path);
 
         foreach (RouterStorage::$_Storage as $id=>$route) {
             if (!$this->hasBrackets($route['uri']))
