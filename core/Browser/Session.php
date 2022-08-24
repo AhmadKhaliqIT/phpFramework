@@ -57,6 +57,8 @@ class Session
         }
 
 
+        $this->gc();
+
     }
 
     public function __destruct() {
@@ -85,7 +87,9 @@ class Session
 
 
         $this->saveToFile();
-        Cookie::set('FrameworkSID', $this->_SessionID);
+        $Domain = parse_url(config('Framework.domain'));
+
+        Cookie::set('FrameworkSID', $this->_SessionID,time()+$this->_LifeTimeSeconds ,'/',$Domain['host']);
     }
 
     private function saveToFile(): void
