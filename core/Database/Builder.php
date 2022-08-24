@@ -141,6 +141,19 @@ class Builder {
         return collect($output);
     }
 
+    /**
+     * Concatenate values of a given column as a string.
+     *
+     * @param string $column
+     * @param string $glue
+     * @return string
+     */
+    public function implode(string $column, string $glue = ''): string
+    {
+        return $this->pluck($column)->implode($glue);
+    }
+
+
 
 
     public function arrayToWhere($array,$type = 'AND') //done
