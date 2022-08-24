@@ -27,8 +27,7 @@ class Builder {
     private string $_offset='';
     private string $_groupBy='';
     private array  $_orderBy=[];
-    private int  $_whereANDCount = 0;
-    private int  $_whereORCount = 0;
+    private array  $_joins=[];
 
     private ?\mysqli $_connection;
 
@@ -71,6 +70,22 @@ class Builder {
         return $this;
     }
 
+
+    public function join($table, $first, $operator = '', $second = '', $type = 'INNER'): Builder
+    {
+        $this->_joins[] = [$table, $first, $operator, $second, $type];
+        return $this;
+    }
+
+    public function leftJoin($table, $first, $operator = '', $second = ''): Builder
+    {
+        return $this->join($table, $first, $operator, $second, 'LEFT');
+    }
+
+    public function rightJoin($table, $first, $operator = '', $second = ''): Builder
+    {
+        return $this->join($table, $first, $operator, $second, 'RIGHT');
+    }
 
     public function orderBy($col,$sort='ASC'): Builder  //done
     {
@@ -312,6 +327,18 @@ class Builder {
         }
 
 
+        //$this->_joins[] = [0$table, 1$first, 2$operator, 3$second, 4$type];
+        if (!empty($this->_joins))
+        {
+            foreach($this->_joins as $join)
+            {
+                $query .= ' '.$join[4].' JOIN '.$join[0].' ON '.$join[1].$join[2].$join[3].' ';
+            }
+
+        }
+
+
+
         $query .= $this->prepare_where_clause();
 
         if($this->_groupBy != '')
@@ -435,8 +462,7 @@ class Builder {
         if (! $this->cloneWithout(['_where'])->where($attributes)->exists()) {
             return $this->insert(array_merge($attributes, $values));
         }
-
-        return (bool) $this->update($values);
+        return (bool) $this->where($attributes)->update($values);
     }
 
     /**
