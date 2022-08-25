@@ -14,6 +14,7 @@ if (!defined('FRAMEWORK_START')) {
     die('You should not be here :)');
 }
 
+date_default_timezone_set("Asia/Tehran");
 require __DIR__ . '/vendor/autoload.php';
 
 use Core\Core;
@@ -45,6 +46,9 @@ if(config('Database.ConnectAutomatically',false))
             config('Database.password'),
             config('Database.dbname'));
         $_connection -> set_charset("utf8");
+        $_connection->query('SET SESSION sql_mode = ``;');
+
+
     }
     catch (\Exception){die("Database connection failed");}
 }
