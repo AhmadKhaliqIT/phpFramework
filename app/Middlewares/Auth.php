@@ -57,7 +57,7 @@ class Auth
     }
 
 
-    public function except(...$methods): Auth
+    public function except(array $methods): Auth
     {
         $this->except_methods = array_merge($this->except_methods,$methods);
         $this->except_methods = array_map('strtolower', array_unique($this->except_methods));
