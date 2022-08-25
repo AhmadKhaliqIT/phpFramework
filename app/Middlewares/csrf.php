@@ -28,7 +28,8 @@ class csrf
 
     public function handle(Request $request)
     {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST')
+        $this->except_methods = array_merge(config('csrf_white_list.URIs'));
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' and !in_array($_SERVER['REQUEST_URI'],$this->except_methods))
         {
             if(!isset($request->_token) or Core()->Session()->token() !== $request->_token)
                 abort(403);
