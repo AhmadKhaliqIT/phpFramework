@@ -21,12 +21,12 @@ use JetBrains\PhpStorm\Pure;
 use function count;
 
 
+
 class Request
 {
 
     public array $request=[];
     public array $files=[];
-
 
     public function __construct()
     {
@@ -46,6 +46,12 @@ class Request
         }
 
     }
+
+    public function getContent()
+    {
+        return file_get_contents('php://input');
+    }
+
 
     public function add($key,$value=null): void
     {
