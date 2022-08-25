@@ -92,7 +92,8 @@ class RouterBase{
 
         $route_match_found = false;
 
-        //print_r($path);
+        /*print_r($path);
+        die();*/
 
         foreach (RouterStorage::$_Storage as $id=>$route) {
             if (!$this->hasBrackets($route['uri']))
@@ -100,6 +101,7 @@ class RouterBase{
                 if ($route['uri'] == $path and $method==$route['method'])
                 {
                     $route_match_found = true;
+
                     $this->call_route_function($id);
                     break;
                 }
@@ -110,7 +112,6 @@ class RouterBase{
             list($route['uri'],$RouteVariables) = $this->make_brackets_searchable($route['uri']);
 
 
-
             // Check path match
             if (preg_match('#'.$route['uri'].'#u', $path, $matches)) {
                 //$path_match_found = true;
@@ -118,6 +119,7 @@ class RouterBase{
 
                 foreach ((array)$route['method'] as $allowedMethod) {
                     // Check method match
+                    //dd($route);
                     if (strtolower($method) === strtolower($allowedMethod)) {
                         array_shift($matches); // Always remove first element. This contains the whole string
 
@@ -125,18 +127,30 @@ class RouterBase{
                             array_shift($matches); // Remove basepath
                         }
 
+                        
                         $parameters = [];
                         for ($i=0, $iMax = count($RouteVariables); $i< $iMax; $i++)
                         {
                             $parameters[$RouteVariables[$i]] = $matches[$i];
                         }
-                        $this->call_route_function($id,$parameters);
+
+                        $match_uri = RouterStorage::$_Storage[$id]['uri'];
+                        foreach ($parameters as $param=>$value)
+                        {
+                            $match_uri = str_replace('{'.$param.'}',$value,$match_uri);
+                        }
+
+                        if ($match_uri == $path)
+                        {
+                            $this->call_route_function($id,$parameters);
+
+                            $route_match_found = true;
+
+                            // Do not check other routes
+                            break;
+                        }
 
 
-                        $route_match_found = true;
-
-                        // Do not check other routes
-                        break;
                     }
                 }
             }
