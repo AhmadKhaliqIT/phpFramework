@@ -114,7 +114,7 @@ class Request
 
     public function hasFile($key): bool
     {
-       if (Arr::exists($this->files,$key)) {
+       if (Arr::exists($this->files,$key) and !empty($this->files[$key]['name'])) {
            return true;
        }
         return false;
