@@ -57,8 +57,11 @@ class Auth
     }
 
 
-    public function except(array $methods): Auth
+    public function except(array|string $methods): Auth
     {
+        if (is_string($methods))
+            $methods = [$methods];
+
         $this->except_methods = array_merge($this->except_methods,$methods);
         $this->except_methods = array_map('strtolower', array_unique($this->except_methods));
         return $this;
@@ -72,7 +75,7 @@ class Auth
 
         if(AuthBass::Guard($this->Current_Guard_name)->check())
             return true;
-
+        
         AuthBass::Guard($this->Current_Guard_name)->redirect_to_login_form();
         die('please login');
     }
