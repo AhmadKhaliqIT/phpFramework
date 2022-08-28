@@ -13,6 +13,8 @@
 
 
 namespace Core\Database;
+use Exception;
+
 class DB {
     private static ?\mysqli $_connection;
     private static Builder $_Builder;
@@ -31,6 +33,33 @@ class DB {
         if (empty(self::$_connection) or is_null(self::$_connection) or !is_resource(self::$_connection))
             self::$_connection = $_connection;
     }
+
+    public static function select($query): array
+    {
+        self::getConnection();
+        $result = self::$_connection->query($query);
+        if(isset(self::$_connection->error) and !empty(self::$_connection->error))
+            throw new Exception('Database Error: '.self::$_connection->error);
+        $output_result=[];
+        if ($result->num_rows > 0)
+            while($row = $result->fetch_assoc()) {
+                $output_result[] = (object) $row;
+            }
+        return $output_result;
+    }
+
+    public static function statement($query): bool
+    {
+        self::getConnection();
+        $result = self::$_connection->query($query);
+
+        if ($result === TRUE) {
+            return true;
+        } else {
+            throw new Exception('Database Error: '.self::$_connection->error);
+        }
+    }
+
 
     public static function beginTransaction()
     {
