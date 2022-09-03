@@ -596,7 +596,10 @@ class Builder {
         });
     }
 
-
+    public function clone(): static
+    {
+        return $this->cloneWithout([]);
+    }
 
 
 
