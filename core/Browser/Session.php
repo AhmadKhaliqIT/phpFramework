@@ -71,13 +71,20 @@ class Session
      * @throws SodiumException
      * @throws Exception
      */
-    private function create(): void
+    private function create($id=''): void
     {
-        $unique_id_generated = false;
-        while (!$unique_id_generated) {
-            $this->_SessionID = $this->generateString(40);
-            if (!FileSystem::exists($this->_StoragePath . $this->_SessionID))
-                $unique_id_generated = true;
+        if (empty($id))
+        {
+            $unique_id_generated = false;
+            while (!$unique_id_generated) {
+                $this->_SessionID = $this->generateString(40);
+                if (!FileSystem::exists($this->_StoragePath . $this->_SessionID))
+                    $unique_id_generated = true;
+            }
+        }
+        else
+        {
+            $this->_SessionID = $id;
         }
 
         $this->_UserID = $this->getUserId();
@@ -88,8 +95,7 @@ class Session
 
         $this->saveToFile();
         $Domain = parse_url(config('Framework.domain'));
-
-        Cookie::set('FrameworkSID', $this->_SessionID,time()+$this->_LifeTimeSeconds ,'/',$Domain['host']);
+        Cookie::set('FrameworkSID', $this->_SessionID,0 ,'/',$Domain['host']);
     }
 
     private function saveToFile(): void
@@ -114,10 +120,12 @@ class Session
      */
     private function loadSession(): void
     {
+        //dd($this->_SessionID);
         $CreateFlag = true;
+        $session = '-';
         if (FileSystem::exists($this->_StoragePath . $this->_SessionID)) {
             $contents = FileSystem::get($this->_StoragePath . $this->_SessionID);
-            $session = @unserialize($contents);
+            $session =  unserialize($contents);
             if (($session !== false) and isset($session->_UserAgent) and !is_null($session->_UserAgent) && $session->_UserAgent === $_SERVER['HTTP_USER_AGENT'] and $session->_LastActivity > (time() - $this->_LifeTimeSeconds))
             {
                 $this->_UserID = $session->_UserID;
@@ -128,7 +136,10 @@ class Session
         }
 
         if ($CreateFlag)
-            $this->create();
+        {
+            $this->create($this->_SessionID);
+        }
+
     }
 
     private function getUserId(): int
@@ -290,14 +301,13 @@ class Session
     }
 
 
-
-
     public function gc()
     {
         foreach (glob($this->_StoragePath."*") as $file) {
             /*** if file is old then delete it ***/
-            if(time() - filectime($file) > $this->_LifeTimeSeconds){
-                unlink($file);
+            $filectime = @filectime($file);
+            if((!$filectime) or (time() - $filectime > $this->_LifeTimeSeconds)){
+                @unlink($file);
             }
         }
     }

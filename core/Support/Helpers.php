@@ -283,14 +283,7 @@ function csrf_field(): string
 
 function validator(array $data = [], array $rules = [], array $messages = [], array $customAttributes = [])
 {
-
-    $factory = app(ValidationFactory::class);
-
-    if (func_num_args() === 0) {
-        return $factory;
-    }
-
-    return $factory->make($data, $rules, $messages, $customAttributes);
+    //
 }
 
 function view($view = null, $data = [])

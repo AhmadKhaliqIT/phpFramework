@@ -43,25 +43,38 @@ class Core
 
     public function __construct($name = null)
     {
-        //if (is_null($this->_instance))
-        //    $this->_instance = $this;
-
-        foreach ($this->_Core as $key => $class) {
-            $this->_Core[$key] = (object)[
-                'object' =>  new $class,
-                'namespace' => $class
-            ];
-        }
-
-        echo $name;
+//        foreach ($this->_Core as $key => $class) {
+//            $this->_Core[$key] = (object)[
+//                'object' =>  new $class,
+//                'namespace' => $class
+//            ];
+//        }
+//        if (!is_null($name))
+//            return $this->_Core[$name];
 
         if (!is_null($name))
-            return $this->_Core[$name];
+            return $this->getInstanceOf($name);
 
     }
 
 
+    private function load_class(string $name)
+    {
+        if (is_object($this->_Core[$name]))
+            return;
+
+        $class = $this->_Core[$name];
+        $this->_Core[$name] = (object)[
+            'object'    => new $class,
+            'namespace' => $class
+        ];
+    }
+
+
     public function getInstanceOf($class){
+        if (is_string($this->_Core[$class]))
+            $this->load_class($class);
+
         return $this->_Core[$class]->object;
     }
 
@@ -69,7 +82,7 @@ class Core
     {
         foreach ($this->_Core as $key => $object)
         {
-            if($object->namespace == $namespace)
+            if(is_object($object) and $object->namespace == $namespace)
                 return ($return_name)?$key:true;
         }
         return false;
@@ -87,7 +100,7 @@ class Core
 //            $args
 //        );
 
-        return $this->_Core[$method]->object;
+        return $this->getInstanceOf($method);
 
     }
 
