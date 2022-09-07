@@ -75,7 +75,7 @@ class Auth
 
         if(AuthBass::Guard($this->Current_Guard_name)->check())
             return true;
-        
+
         AuthBass::Guard($this->Current_Guard_name)->redirect_to_login_form();
         die('please login');
     }
