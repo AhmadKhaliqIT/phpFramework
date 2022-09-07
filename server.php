@@ -53,10 +53,6 @@ if(config('Database.ConnectAutomatically',false))
     catch (\Exception){die("Database connection failed");}
 }
 
-
-
-
-
 /* Load All Routes */
 include_dir(BASE_PATH . '/routes/');
 
