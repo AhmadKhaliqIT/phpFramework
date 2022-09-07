@@ -14,6 +14,8 @@
 
 namespace Core\Blade;
 use InvalidArgumentException;
+use Core\Auth\Auth;
+use Core\Database\DB;
 class ManageBlade{
 
 

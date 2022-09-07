@@ -1,4 +1,6 @@
 <?php
+namespace Core\Blade;
+
 /* بسم الله الرحمن الرحیم */
 /**
  * phpFramework
@@ -10,12 +12,8 @@
  * @link       https://github.com/AhmadKhaliqIT/phpFramework/
  */
 
-
-
-namespace Core\Blade;
-
-
 use Exception;
+
 
 class View extends Blade {
 

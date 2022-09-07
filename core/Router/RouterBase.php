@@ -127,7 +127,7 @@ class RouterBase{
                             array_shift($matches); // Remove basepath
                         }
 
-                        
+
                         $parameters = [];
                         for ($i=0, $iMax = count($RouteVariables); $i< $iMax; $i++)
                         {

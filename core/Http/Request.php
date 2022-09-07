@@ -16,6 +16,7 @@
 namespace Core\Http;
 use Core\FileSystem\FileSystem;
 use Core\Support\Arr;
+use Exception;
 use finfo;
 use JetBrains\PhpStorm\Pure;
 use function count;
@@ -46,6 +47,14 @@ class Request
         }
 
     }
+
+    public function __get($name) {
+        if (!isset($this->$name))
+            throw new Exception('Request: Undefined property: '.$name);
+
+        return $this->$name;
+    }
+
 
     public function getContent()
     {

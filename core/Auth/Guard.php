@@ -48,9 +48,9 @@ class Guard{
         Session()->remove('Auth_'.$this->_guard);
     }
 
-    public function loginUsingId()
+    public function loginUsingId($id)
     {
-        //todo
+        Session()->put('Auth_'.$this->_guard,$id);
     }
 
     /**
@@ -65,7 +65,9 @@ class Guard{
         {
             if (Crypt::verify($password,$DB_Data->password))
             {
-                Session()->put('Auth_'.$this->_guard,$DB_Data->id);
+                //Session()->put('Auth_'.$this->_guard,$DB_Data->id);
+                //return true;
+                $this->loginUsingId($DB_Data->id);
                 return true;
             }
         }
