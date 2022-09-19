@@ -18,10 +18,19 @@ use Whoops\Handler\PlainTextHandler;
 
 class WhoopsErrorLogger extends \Whoops\Handler\PrettyPageHandler
 {
+    private bool $_DEBUG = false;
+
     public function handle()
     {
 
-        parent::handle();
+        $config_arr = include BASE_PATH . '/config/Framework.php';
+        if(is_array($config_arr) and isset($config_arr['debug']) and is_bool($config_arr['debug']))
+            $this->_DEBUG = $config_arr['debug'];
+
+
+        if ($this->_DEBUG)
+            parent::handle();
+
         $plainTextHandler = new PlainTextHandler();
         $plainTextHandler->setException($this->getException());
         $plainTextHandler->setInspector($this->getInspector());
@@ -30,8 +39,15 @@ class WhoopsErrorLogger extends \Whoops\Handler\PrettyPageHandler
         $error = '['.$date.' '.date('H:i:s').']'."\n".$error."\n".str_repeat('#',120)."\n";
         file_put_contents(BASE_PATH.'/logs/phpFramework-'.$date.'.log', $error,FILE_APPEND);
 
-
         $this->remove_old_logs();
+
+        if (!$this->_DEBUG)
+        {
+            $html = file_get_contents(BASE_PATH.'/core/Support/error_pages/500.html');
+            echo $html;
+            http_response_code(500);
+            exit();
+        }
 
 
     }

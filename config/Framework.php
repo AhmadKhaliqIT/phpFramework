@@ -14,6 +14,7 @@
 
 
 return [
+    'debug'  => false,
     'key' => 'Qg+zxgGnBdGIzyjOXKgv9XHnaz8cpwOlFrHulxPLYlg=',
-    'domain' => 'http://saam.it'
+    'domain' => 'http://domain.com'
 ];
